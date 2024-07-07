@@ -11,6 +11,7 @@ import Voice from 'react-native-voice';
 import
  MaterialCommunityIcons
 from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Chatbot() {
   const [textValue, setText] = useState("");
@@ -53,7 +54,15 @@ function Chatbot() {
           Voice.destroy().then(Voice.removeAllListeners);
         };
       }, []);
-    
+      const saveRecipeToLcoal = async () => {
+        //textValue
+        try {
+          await AsyncStorage.setItem('saveRecipe', textValue.toString());
+        } catch (e) {
+          // saving error
+        }
+      }
+
   const getFoodRecipeFromApi = (foodName) => {
     setText(foodName)
     if(foodName.length >2){
@@ -69,6 +78,8 @@ function Chatbot() {
   };
   return (
     <View style ={styles.container}>
+      <View style={styles.topItem}>
+         
       <View style={styles.editorInput} >
         <TextInput
           style={styles.textInput}
@@ -89,6 +100,17 @@ function Chatbot() {
             />
                 </TouchableOpacity>
               )}
+            </View>
+            </View>
+            <View style={styles.boxItem}>
+            <TouchableOpacity
+              style={styles.butttonView}
+              onPress={() => {
+                saveRecipeToLcoal();
+              }}
+            >
+              <Text style={styles.textButton}>Save</Text>
+            </TouchableOpacity>
             </View>
             </View>
     <FlatList
@@ -117,12 +139,22 @@ export default Chatbot;
 
 const styles = StyleSheet.create({
   container:{flex : 1,justifyContent : 'center',alignItems : 'center'},
+  topItem: {
+    height: 50,
+    flexDirection:'row',
+    width :"100%",
+    margin:10,
+    alignSelf :'center',
+  },
+  boxItem:{ height: 50,
+    width :"30%",
+   },
   editorInput: {
     height: 50,
     flexDirection:'row',
-    width :300,
+    width :"70%",
     alignSelf :'center',
-    margin: 12,
+    marginLeft: 12,
     borderRadius :10,
     borderWidth: 1,
   },
@@ -135,6 +167,17 @@ const styles = StyleSheet.create({
     width :"20%",
     justifyContent : 'center',alignItems : 'center'
    },
+   butttonView :{
+    backgroundColor: "black",
+    height: 40,
+    width: 70,
+    borderRadius :10,
+    marginTop :5,
+    alignSelf : 'center',
+    justifyContent: "center",
+    alignItems : 'center',
+  },
+  textButton : { color: "white" },
   viewSell : {flexDirection: "column", margin: 10},
   textView : { color: "black" ,margin :2},
   speak: {

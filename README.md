@@ -10,7 +10,7 @@
 //Setup for ios -
 
 //1- npm i 
-//2- cd ios && pod install
-// npx react-native run-ios
+//2- cd ios && pod install && sudo gem install cocoapods
+//3- npx react-native run-ios
 
 
